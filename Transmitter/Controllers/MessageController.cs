@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Transmitter.Models;
+using Transmitter.Stores;
 
 namespace Transmitter.Controllers
 {
@@ -8,10 +9,12 @@ namespace Transmitter.Controllers
     public class MessageController : ControllerBase
     {
         private readonly ILogger<MessageController> _logger;
+        private readonly IMessageStore messageStore;
 
-        public MessageController(ILogger<MessageController> logger)
+        public MessageController(ILogger<MessageController> logger, IMessageStore messageStore)
         {
             _logger = logger;
+            this.messageStore = messageStore;
         }
 
         [HttpGet(Name = "GetMessage")]

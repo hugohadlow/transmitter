@@ -2,9 +2,14 @@
 using Transmitter.Tools;
 using Newtonsoft.Json;
 
-namespace Transmitter.Store
+namespace Transmitter.Stores
 {
-    public class MessageStore
+    public interface IMessageStore
+    {
+
+    }
+
+    public class MessageStore : IMessageStore
     {
         private class Subscription //Messages are grouped by subscription.
         {

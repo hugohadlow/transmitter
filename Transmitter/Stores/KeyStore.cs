@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Security.Cryptography;
 
-namespace Transmitter.Store
+namespace Transmitter.Stores
 {
     public class KeyStore
     {

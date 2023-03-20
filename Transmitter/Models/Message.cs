@@ -4,9 +4,10 @@ namespace Transmitter.Models
 {
     public class Message
     {
-        public readonly string Identity;
-        public readonly string Signature;
-        public readonly string Payload;
+
+        public string Identity { get; }
+        public string Signature { get; }
+        public string Payload { get; }
 
         //public string? HashFunction;
 

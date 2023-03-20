@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using Transmitter.Store;
+using Transmitter.Stores;
 using Transmitter.Tools;
 
 namespace TransmitterTest.Stores
