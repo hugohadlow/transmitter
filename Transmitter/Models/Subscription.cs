@@ -2,7 +2,7 @@
 {
     public class Subscription
     {
-        string identity { get; }
-        public Subscription(string identity) { this.identity = identity; }
+        public string Identity { get; }
+        public Subscription(string identity) { Identity = identity; }
     }
 }

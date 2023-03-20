@@ -5,7 +5,27 @@ using Transmitter.Stores;
 namespace Transmitter.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("messages")]
+    public class MessagesController : ControllerBase
+    {
+        private readonly ILogger<MessagesController> _logger;
+        private readonly IMessageStore messageStore;
+
+        public MessagesController(ILogger<MessagesController> logger, IMessageStore messageStore)
+        {
+            _logger = logger;
+            this.messageStore = messageStore;
+        }
+
+        [HttpGet("{identity}", Name = "GetMessages")]
+        public IEnumerable<Message> Get(string identity)
+        {
+            return messageStore.GetMessages(identity);
+        }
+    }
+
+    [ApiController]
+    [Route("message")]
     public class MessageController : ControllerBase
     {
         private readonly ILogger<MessageController> _logger;
@@ -17,10 +37,11 @@ namespace Transmitter.Controllers
             this.messageStore = messageStore;
         }
 
-        [HttpGet(Name = "GetMessage")]
-        public IEnumerable<Message> Get()
+        [HttpPut(Name = "PutMessage")]
+        public void Put(Message message)
         {
-            return new List<Message>(){ new Message("identityA", "signatureA", "payloadA")};
+            //Need to add validation
+            messageStore.AddMessage(message);
         }
     }
 }

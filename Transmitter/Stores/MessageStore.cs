@@ -6,7 +6,9 @@ namespace Transmitter.Stores
 {
     public interface IMessageStore
     {
-
+        IEnumerable<Models.Subscription> GetSubscriptions();
+        IEnumerable<Models.Message> GetMessages(string identity);
+        void AddMessage(Message message);
     }
 
     public class MessageStore : IMessageStore
@@ -51,6 +53,8 @@ namespace Transmitter.Stores
 
             public void AddMessage(Message message)
             {
+                //Need to validate message
+
                 //Use signature to generate filename for message
                 string base32 = Utils.Base64ToBase32(message.Signature); //Use Base32 for safe filenames.
                 string shortName = base32.Substring(0, 10);
@@ -118,9 +122,9 @@ namespace Transmitter.Stores
             WriteSubscriptions();
         }
 
-        public IEnumerable<string> GetSubscriptions()
+        public IEnumerable<Models.Subscription> GetSubscriptions()
         {
-            return subscriptions.Keys.ToList();
+            return subscriptions.Keys.Select(x=>new Models.Subscription(x));
         }
 
         private bool HasSubscription(string identity)
@@ -130,7 +134,10 @@ namespace Transmitter.Stores
 
         public IEnumerable<Message> GetMessages(string identity)
         {
-            return subscriptions[identity].GetMessages();
+            if (subscriptions.ContainsKey(identity))
+                return subscriptions[identity].GetMessages();
+            else
+                return Enumerable.Empty<Message>();
         }
 
         private void WriteSubscriptions()

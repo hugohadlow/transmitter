@@ -1,12 +1,15 @@
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace Transmitter.Models
 {
     public class Message
     {
-
+        [Required]
         public string Identity { get; }
+        [Required]
         public string Signature { get; }
+        [Required]
         public string Payload { get; }
 
         //public string? HashFunction;
