@@ -55,6 +55,13 @@ namespace Transmitter.Stores
             {
                 //Need to validate message
 
+
+
+                if (messages.Any(x =>
+                    x.Identity.Equals(message.Identity) &&
+                        x.Payload.Equals(message.Payload)))
+                    return; //Don't store the same message twice.
+
                 //Use signature to generate filename for message
                 string base32 = Utils.Base64ToBase32(message.Signature); //Use Base32 for safe filenames.
                 string shortName = base32.Substring(0, 10);
