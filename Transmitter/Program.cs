@@ -4,10 +4,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 //Add configuration
 var configurationBuilder = new ConfigurationBuilder()
-    //.SetBasePath("path here") //<--You would need to set the path
-    .AddJsonFile("appsettings.json"); //or what ever file you have the settings
+    .AddJsonFile("appsettings.json");
 IConfiguration configuration = configurationBuilder.Build();
-//builder.Services.AddScoped<IConfiguration>(_ => configuration);
 
 builder.Services.AddScoped<IMessageStore, MessageStore>();
 

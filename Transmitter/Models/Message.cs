@@ -12,7 +12,7 @@ namespace Transmitter.Models
         [Required]
         public string Payload { get; }
 
-        //public string? HashFunction;
+        public string? HashFunction { get; }
 
         /*
          * Constructor that takes a pre-computed signature required for serialization.
@@ -21,14 +21,15 @@ namespace Transmitter.Models
          * or should we allow other people's invalid messages to be constructed, 
          * and handle this elsewhere?
         */
-        public Message(string identity, string signature, string payload)
+        public Message(string identity, string signature, string payload, string hashFunction = null)
         {
             Identity = identity;
             Signature = signature;
             Payload = payload;
-
+            HashFunction = hashFunction;
             //Should verify message here?
         }
+
 
         override public string ToString()
         {
