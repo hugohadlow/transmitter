@@ -5,7 +5,7 @@ using Transmitter.Stores;
 namespace Transmitter.Controllers
 {
     [ApiController]
-    [Route("subscriptions")]
+    [Route("api/subscriptions")]
     public class SubscriptionsController : ControllerBase
     {
         private readonly ILogger<SubscriptionsController> _logger;

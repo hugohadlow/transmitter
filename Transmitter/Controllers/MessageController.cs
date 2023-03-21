@@ -5,7 +5,7 @@ using Transmitter.Stores;
 namespace Transmitter.Controllers
 {
     [ApiController]
-    [Route("messages")]
+    [Route("api/messages")]
     public class MessagesController : ControllerBase
     {
         private readonly ILogger<MessagesController> _logger;
@@ -25,7 +25,7 @@ namespace Transmitter.Controllers
     }
 
     [ApiController]
-    [Route("message")]
+    [Route("api/message")]
     public class MessageController : ControllerBase
     {
         private readonly ILogger<MessageController> _logger;
