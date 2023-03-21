@@ -39,7 +39,7 @@ namespace TransmitterTest.Stores
             var messageStore2 = new MessageStore(configuration);
             var subscriptions = messageStore2.GetSubscriptions();
             Assert.AreEqual(1, subscriptions.Count());
-            Assert.AreEqual(identity, subscriptions.First());
+            Assert.AreEqual(identity, subscriptions.First().Identity);
         }
 
 
@@ -61,7 +61,7 @@ namespace TransmitterTest.Stores
             var subscriptions = messageStore2.GetSubscriptions();
             Assert.AreEqual(1, subscriptions.Count());
             var subscription = subscriptions.First();
-            Assert.AreEqual(identity, subscription);
+            Assert.AreEqual(identity, subscription.Identity);
             var messages = messageStore2.GetMessages(identity);
             Assert.AreEqual(1, messages.Count());
             var storedMessage = messages.First();
