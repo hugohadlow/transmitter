@@ -6,11 +6,11 @@ namespace Transmitter.Tools
 {
     public class Signer
     {
-        public string Sign(Key key, string payload, string hashFunction = "SHA256")
+        public static string Sign(Key key, string payload, string hashFunction = "SHA256")
         {
             RSACryptoServiceProvider rsa = KeyHelper.RSAFromKey(key);
             byte[] signature = rsa.SignData(Encoding.Unicode.GetBytes(payload), hashFunction);
-            return Convert.ToBase64String(signature);
+            return Base32Encoding.ToString(signature);
         }
     }
 }

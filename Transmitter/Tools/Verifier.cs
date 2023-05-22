@@ -20,7 +20,7 @@ namespace Transmitter.Tools
             string hashFunction = message.HashFunction ?? defaultHashFunction;
 
             byte[] data = Encoding.Unicode.GetBytes(message.Payload);
-            byte[] signature = Convert.FromBase64String(message.Signature);
+            byte[] signature = Base32Encoding.ToBytes(message.Signature);
 
             return publicKey.VerifyData(data, hashFunction, signature);
         }

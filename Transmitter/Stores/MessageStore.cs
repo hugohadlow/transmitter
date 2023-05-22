@@ -63,11 +63,10 @@ namespace Transmitter.Stores
                     return; //Don't store the same message twice.
 
                 //Use signature to generate filename for message
-                string base32 = Utils.Base64ToBase32(message.Signature); //Use Base32 for safe filenames.
-                string shortName = base32.Substring(0, 10);
+                string shortName = message.Signature.Substring(0, 10);
                 for (int i = 11; messageFilenames.Contains(shortName); i++)
                 {
-                    shortName = base32.Substring(0, i);
+                    shortName = message.Signature.Substring(0, i);
                 }
 
                 string jsonString = JsonConvert.SerializeObject(message);
@@ -118,11 +117,10 @@ namespace Transmitter.Stores
         public void AddSubscription(string identity)
         {
             //Generate unique directory name
-            var base32 = Utils.Base32(identity); //Use Base32 for safe filenames.
-            string shortName = base32.Substring(0, 10);
+            string shortName = identity.Substring(0, 10);
             for (int i = 11; subscriptions.Any(x=>x.Value.Directory.Equals(shortName)); i++)
             {
-                shortName = base32.Substring(0, i);
+                shortName = identity.Substring(0, i);
             }
 
             subscriptions.Add(identity, new Subscription(identity, shortName));

@@ -31,7 +31,7 @@ namespace TransmitterTest.Stores
         [Test]
         public void TestWriteSubscriptions()
         {
-            var identity = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+            var identity = Base32Encoding.ToString(Guid.NewGuid().ToByteArray());
             var messageStore1 = new MessageStore(configuration);
             messageStore1.AddSubscription(identity);
 
