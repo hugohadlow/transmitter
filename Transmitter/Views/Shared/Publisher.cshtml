@@ -1,0 +1,35 @@
+﻿@model Transmitter.Models.Key
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Publisher</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Publisher</h1>
+
+    <h2>Active key:</h2> @Model.PublicKey
+    <h2>Nickname:</h2> @Model.Name
+    <h2>Message:</h2>
+    <form method="post" action="../Publisher">
+        <input type="hidden" name="publicKey" value="@Model.PublicKey" />
+        <textarea name="payload" rows="3" cols="30"></textarea><br />
+        <button type="submit">Publish</button>
+    </form>
+
+</body>
+</html>

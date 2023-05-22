@@ -42,7 +42,7 @@
             @foreach (var key in Model)
             {
                 <tr>
-                    <td>@key.Name</td>
+                    <td><a href="Publisher/@key.PublicKey">@key.Name</a></td>
                     <td>@key.PublicKey</td>
                     <td>
                         <form action="DeleteKey" method="get">
