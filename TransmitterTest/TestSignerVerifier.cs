@@ -18,8 +18,7 @@ namespace TransmitterTest
         {
             var keyPair = KeyHelper.Generate("nickname");
             string payload = "payload";
-            Signer signer = new Signer();
-            var signature = signer.Sign(keyPair, payload);
+            var signature = Signer.Sign(keyPair, payload);
             Message message = new Message(keyPair.PublicKey, signature, payload);
             Console.WriteLine(message);
 
@@ -32,8 +31,7 @@ namespace TransmitterTest
         {
             var keyPair = KeyHelper.Generate("nickname");
             string payload = "payload";
-            Signer signer = new Signer();
-            var signature = signer.Sign(keyPair, payload, "SHA512");
+            var signature = Signer.Sign(keyPair, payload, "SHA512");
             Message message = new Message(keyPair.PublicKey, signature, payload, "SHA512");
             Console.WriteLine(message);
 

@@ -6,7 +6,7 @@ namespace Transmitter.Models
     public class Key
     {
         [Required]
-        public string PublicKey { get; } //A byte[] would be automatically serialized as base64, but is a pain to use as a dictionary key
+        public string PublicKey { get; }
         [Required]
         public string PrivateKey { get; }
         [Required]

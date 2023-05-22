@@ -48,8 +48,7 @@ namespace TransmitterTest.Stores
         {
             var keyPair = KeyHelper.Generate("nickname");
             string payload = "payload";
-            Signer signer = new Signer();
-            var signature = signer.Sign(keyPair, payload);
+            var signature = Signer.Sign(keyPair, payload);
             var identity = keyPair.PublicKey;
             Message message = new Message(identity, signature, payload);
 
