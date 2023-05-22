@@ -118,7 +118,7 @@ namespace Transmitter.Stores
         public void AddSubscription(string identity)
         {
             //Generate unique directory name
-            var base32 = Utils.Base64ToBase32(identity); //Use Base32 for safe filenames.
+            var base32 = Utils.Base32(identity); //Use Base32 for safe filenames.
             string shortName = base32.Substring(0, 10);
             for (int i = 11; subscriptions.Any(x=>x.Value.Directory.Equals(shortName)); i++)
             {

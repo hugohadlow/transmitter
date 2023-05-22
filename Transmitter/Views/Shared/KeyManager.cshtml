@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Transmitter.Models.Key>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Key manager</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Key manager</h1>
+
+    <h2>Generate new key</h2>
+    <form method="post">
+        Nickname: 
+        <input type="text" name="nickname" required />
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Keys</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Identity</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var key in Model)
+            {
+                <tr>
+                    <td>@key.Name</td>
+                    <td>@key.PublicKey</td>
+                    <td>
+                        <form action="DeleteKey" method="get">
+                            <input type="hidden" name="publicKey" value="@key.PublicKey" />
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

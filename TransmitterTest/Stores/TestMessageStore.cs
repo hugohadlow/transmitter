@@ -31,7 +31,7 @@ namespace TransmitterTest.Stores
         [Test]
         public void TestWriteSubscriptions()
         {
-            var identity = Convert.ToBase64String(Guid.NewGuid().ToByteArray()); //Identity must be Base64
+            var identity = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             var messageStore1 = new MessageStore(configuration);
             messageStore1.AddSubscription(identity);
 
@@ -46,11 +46,11 @@ namespace TransmitterTest.Stores
         [Test]
         public void TestWriteMessage()
         {
-            var keyPair = KeyHelper.Generate();
+            var keyPair = KeyHelper.Generate("nickname");
             string payload = "payload";
             Signer signer = new Signer();
             var signature = signer.Sign(keyPair, payload);
-            var identity = KeyHelper.PublicKey(keyPair);
+            var identity = keyPair.PublicKey;
             Message message = new Message(identity, signature, payload);
 
             var messageStore1 = new MessageStore(configuration);

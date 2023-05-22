@@ -24,18 +24,18 @@ namespace TransmitterTest.Stores
         [Test]
         public void TestWriteKeys()
         {
-            var keyPair = KeyHelper.Generate();
+            var keyPair = KeyHelper.Generate("nickname");
 
             KeyStore keyStore1 = new KeyStore(configuration);
-            keyStore1.AddKeyPair(keyPair);
+            keyStore1.AddKey(keyPair);
             keyStore1.WriteKeyPairs();
 
             //Use new KeyStore to check persistence to disk.
             KeyStore keyStore2 = new KeyStore(configuration);
-            Assert.AreEqual(1, keyStore2.keyPairs.Count);
+            Assert.AreEqual(1, keyStore2.GetKeys().Count());
             Assert.AreEqual(
-                KeyHelper.PublicKey(keyPair), 
-                KeyHelper.PublicKey(keyStore2.keyPairs.First()));
+                keyPair.PublicKey, 
+                keyStore2.GetKeys().First().PublicKey);
         }
     }
 }

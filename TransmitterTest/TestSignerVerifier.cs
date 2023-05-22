@@ -16,11 +16,11 @@ namespace TransmitterTest
         [Test]
         public void SignAndVerifyMessage()
         {
-            var keyPair = KeyHelper.Generate();
+            var keyPair = KeyHelper.Generate("nickname");
             string payload = "payload";
             Signer signer = new Signer();
             var signature = signer.Sign(keyPair, payload);
-            Message message = new Message(KeyHelper.PublicKey(keyPair), signature, payload);
+            Message message = new Message(keyPair.PublicKey, signature, payload);
             Console.WriteLine(message);
 
             Verifier verifier = new Verifier(configuration);
@@ -30,11 +30,11 @@ namespace TransmitterTest
         [Test]
         public void SignAndVerifyMessageSHA512()
         {
-            var keyPair = KeyHelper.Generate();
+            var keyPair = KeyHelper.Generate("nickname");
             string payload = "payload";
             Signer signer = new Signer();
             var signature = signer.Sign(keyPair, payload, "SHA512");
-            Message message = new Message(KeyHelper.PublicKey(keyPair), signature, payload, "SHA512");
+            Message message = new Message(keyPair.PublicKey, signature, payload, "SHA512");
             Console.WriteLine(message);
 
             Verifier verifier = new Verifier(configuration);

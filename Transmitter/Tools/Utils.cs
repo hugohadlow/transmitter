@@ -7,5 +7,12 @@
             var bytes = Convert.FromBase64String(input);
             return Base32Encoding.ToString(bytes);
         }
+
+        //Use Base32 for safe filenames.
+        public static string Base32(string input)
+        {
+            var bytes = Convert.FromBase64String(input);
+            return Base32Encoding.ToString(bytes);
+        }
     }
 }

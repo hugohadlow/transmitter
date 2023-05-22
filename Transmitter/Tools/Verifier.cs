@@ -15,8 +15,7 @@ namespace Transmitter.Tools
 
         public bool verify(Message message)
         {
-            var publicKey = new RSACryptoServiceProvider();
-            publicKey.ImportRSAPublicKey(Convert.FromBase64String(message.Identity), out _);
+            var publicKey = KeyHelper.RSAFromPublicKey(message.Identity);
 
             string hashFunction = message.HashFunction ?? defaultHashFunction;
 
