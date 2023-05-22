@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Transmitter.Models.Message>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subscription</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Subscription</h1>
+    <h2>Identity:</h2> @Model.First().Identity
+
+    <table>
+        <thead>
+            <tr>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var message in Model)
+            {
+                <tr>
+                    <td>@message.Payload</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>

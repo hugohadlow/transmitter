@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Transmitter.Models.Subscription>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subscriptions</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Subscriptions</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Identity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subscription in Model)
+            {
+                <tr>
+                    <td><a href="Subscription/@subscription.Identity">@subscription.Identity</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
