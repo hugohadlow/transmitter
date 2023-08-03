@@ -1,0 +1,83 @@
+﻿@model dynamic
+@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Microblogging</title>
+</head>
+<body>
+    <h1>Microblogging</h1>
+
+    <h2>Select identity</h2>
+
+        <form method="get" action="Microblog">
+            <select name="publicKey" id="publicKey">
+                @foreach (var identity in Model.Identities)
+                {
+                    <option value="@identity.Key">@identity.Value</option>
+                }
+            </select>
+            @if (((IDictionary<String, object>)Model).ContainsKey("ReplyId"))
+            {
+                <input type="hidden" name="replyId" value="@Model.ReplyId" />
+            }
+            @if (((IDictionary<String, object>)Model).ContainsKey("QuoteId"))
+            {
+                <input type="hidden" name="quoteId" value="@Model.QuoteId" />
+            }
+            <button type="submit">Select</button>
+        </form>
+
+    @if (((IDictionary<String, object>)Model).ContainsKey("PublicKey"))
+    {
+        <h2>Publish</h2>
+
+        <h3>Active key:</h3> @Model.PublicKey
+        <h3>Nickname:</h3> @Model.Nickname
+        <h3>Message:</h3>
+        <form method="post" action="../Microblog">
+            <input type="hidden" name="publicKey" value="@Model.PublicKey" />
+            @if (((IDictionary<String, object>)Model).ContainsKey("ReplyId"))
+            {
+                <input type="hidden" name="replyId" value="@Model.ReplyId" />
+            }
+            @if (((IDictionary<String, object>)Model).ContainsKey("QuoteId"))
+            {
+                <input type="hidden" name="quoteId" value="@Model.QuoteId" />
+            }
+            <textarea name="payload" rows="3" cols="30"></textarea><br />
+            <button type="submit">Publish</button>
+        </form>
+    }
+    
+    <h2>Feed</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Message</th>
+                <th>Identity</th>
+                <th>Reply</th>
+                <th>Quote</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                string pk = ((IDictionary<String, object>)Model).ContainsKey("PublicKey") ? "&publicKey=" + Model.PublicKey : "";
+            }
+            @foreach (var message in Model.Messages)
+            {
+                <tr>
+                    <td>@message.Payload</td>
+                    <td><a href="Subscription/@message.Identity">@message.Identity</a></td>
+                            <td><a href="Microblog?replyId=@message.Signature@pk">Reply</a>
+                            <td><a href="Microblog?quoteId=@message.Signature@pk">Quote</a>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</body>
+</html>

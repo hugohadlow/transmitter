@@ -1,5 +1,4 @@
 ﻿using Transmitter.Models;
-using Transmitter.Tools;
 using Newtonsoft.Json;
 
 namespace Transmitter.Stores
@@ -7,6 +6,7 @@ namespace Transmitter.Stores
     public interface IMessageStore
     {
         IEnumerable<Models.Subscription> GetSubscriptions();
+        IEnumerable<Models.Message> GetMessages();
         IEnumerable<Models.Message> GetMessages(string identity);
         void AddMessage(Message message);
     }
@@ -143,6 +143,11 @@ namespace Transmitter.Stores
                 return subscriptions[identity].GetMessages();
             else
                 return Enumerable.Empty<Message>();
+        }
+
+        public IEnumerable<Message> GetMessages()
+        {
+            return subscriptions.Values.SelectMany(x => x.GetMessages());
         }
 
         private void WriteSubscriptions()
