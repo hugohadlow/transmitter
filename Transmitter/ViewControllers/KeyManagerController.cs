@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Transmitter.Models;
 using Transmitter.Stores;
 
 namespace Transmitter.ViewControllers
@@ -8,25 +9,25 @@ namespace Transmitter.ViewControllers
     public class KeyManagerController : Controller
     {
         private readonly ILogger<KeyManagerController> _logger;
-        private readonly IKeyStore keyStore;
+        private readonly IKeyStore<SigningKey> signingKeyStore;
 
-        public KeyManagerController(ILogger<KeyManagerController> logger, IKeyStore keyStore)
+        public KeyManagerController(ILogger<KeyManagerController> logger, IKeyStore<SigningKey> signingKeyStore)
         {
             _logger = logger;
-            this.keyStore = keyStore;
+            this.signingKeyStore = signingKeyStore;
         }
 
         [HttpGet(Name = "KeyManager")]
         public IActionResult KeyManager()
         {
-            var keys = keyStore.GetKeys();
+            var keys = signingKeyStore.GetKeys();
             return View(keys);
         }
 
         [HttpPost]
         public IActionResult GenerateKey([FromForm] IFormCollection body)
         {
-            keyStore.GenerateKey(body["nickname"]);
+            signingKeyStore.GenerateKey(body["nickname"]);
             return RedirectToRoute("KeyManager");
         }
     }

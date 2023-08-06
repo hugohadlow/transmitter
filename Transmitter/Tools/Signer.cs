@@ -6,7 +6,7 @@ namespace Transmitter.Tools
 {
     public class Signer
     {
-        public static string Sign(Key key, string payload, string hashFunction = "SHA256")
+        public static string Sign(SigningKey key, string payload, string hashFunction = "SHA512")
         {
             RSACryptoServiceProvider rsa = KeyHelper.RSAFromKey(key);
             byte[] signature = rsa.SignData(Encoding.Unicode.GetBytes(payload), hashFunction);

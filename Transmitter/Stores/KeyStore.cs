@@ -1,59 +1,60 @@
 ﻿using Newtonsoft.Json;
+using System.Security.Cryptography;
 using Transmitter.Models;
 using Transmitter.Tools;
 
 namespace Transmitter.Stores
 {
-    public interface IKeyStore
+    public interface IKeyStore<T > where T : Key
     {
-        IEnumerable<Key> GetKeys();
-        Key GetKey(string publicKey);
+        IEnumerable<T> GetKeys();
+        T GetKey(string publicKey);
         string GenerateKey(string nickname);
         void EditKey(string publicKey, string nickname);
         void DeleteKey(string publicKey);
     }
 
-    public class KeyStore : IKeyStore
+    public class KeyStore<T> : IKeyStore<T> where T : Key
     {
         private readonly string keysLocation;
 
-        protected Dictionary<string, Key> keys;
+        protected Dictionary<string, T> keys;
 
         public KeyStore(IConfiguration configuration) {
-            keysLocation = configuration["Keys:Location"];
+            keysLocation = configuration["Keys:" + typeof(T).Name + ":Location"];
 
             if (File.Exists(keysLocation + "/keys.json"))
             {
                 var json = File.ReadAllText(keysLocation + "/keys.json");
-                var keyList = JsonConvert.DeserializeObject<List<Key>>(json);
+                var keyList = JsonConvert.DeserializeObject<List<T>>(json);
                 keys = keyList.ToDictionary(x=>x.PublicKey, x=>x);
             }
             else
             {
-                keys = new Dictionary<string, Key>();
+                keys = new Dictionary<string, T>();
             }
         }
 
-        public IEnumerable<Key> GetKeys()
+        public IEnumerable<T> GetKeys()
         {
             return keys.Values;
         }
 
-        public Key GetKey(string publicKey)
+        public T GetKey(string publicKey)
         {
             return keys[publicKey];
         }
 
-        public void AddKey(Key key)
-        {
-            keys.Add(key.PublicKey, key);
-            WriteKeyPairs();
-        }
-
         public string GenerateKey(string nickname)
         {
-            var key = KeyHelper.Generate(nickname);
-            keys.Add(key.PublicKey, key);
+            var rsa = new RSACryptoServiceProvider(2048) { PersistKeyInCsp = false };
+            var key = (T)Activator.CreateInstance(typeof(T), new object[] {
+                    Base32Encoding.ToString(rsa.ExportCspBlob(false)),
+                    Base32Encoding.ToString(rsa.ExportCspBlob(true)),
+                    nickname 
+            });
+
+            keys.Add(key.PublicKey, (T)key);
             WriteKeyPairs();
             return key.PublicKey;
         }

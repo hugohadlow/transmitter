@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using Transmitter.Models;
 using Transmitter.Stores;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +9,7 @@ var configurationBuilder = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json");
 IConfiguration configuration = configurationBuilder.Build();
 
-builder.Services.AddScoped<IKeyStore, KeyStore>();
+builder.Services.AddScoped<IKeyStore<SigningKey>, KeyStore<SigningKey>> ();
 builder.Services.AddScoped<IMessageStore, MessageStore>();
 
 // Add services to the container.

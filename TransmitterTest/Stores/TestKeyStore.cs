@@ -1,16 +1,16 @@
 using Microsoft.Extensions.Configuration;
+using Transmitter.Models;
 using Transmitter.Stores;
-using Transmitter.Tools;
 
 namespace TransmitterTest.Stores
 {
-    public class TestKeyStore
+    public class TestSigningKeyStore
     {
         IConfiguration configuration = TestUtils.InitConfiguration();
 
         private void DeleteAllKeys()
         {
-            var keysLocation = configuration["Keys:Location"];
+            var keysLocation = configuration["Keys:SigningKey:Location"];
             if (Directory.Exists(keysLocation))
                 Directory.Delete(keysLocation, true);
         }
@@ -24,14 +24,13 @@ namespace TransmitterTest.Stores
         [Test]
         public void TestWriteKeys()
         {
-            var keyPair = KeyHelper.Generate("nickname");
-
-            KeyStore keyStore1 = new KeyStore(configuration);
-            keyStore1.AddKey(keyPair);
+            KeyStore<SigningKey> keyStore1 = new KeyStore<SigningKey>(configuration);
+            var publicKey = keyStore1.GenerateKey("nickname");
+            var keyPair = keyStore1.GetKey(publicKey);
             keyStore1.WriteKeyPairs();
 
             //Use new KeyStore to check persistence to disk.
-            KeyStore keyStore2 = new KeyStore(configuration);
+            KeyStore<SigningKey> keyStore2 = new KeyStore<SigningKey>(configuration);
             Assert.AreEqual(1, keyStore2.GetKeys().Count());
             Assert.AreEqual(
                 keyPair.PublicKey, 

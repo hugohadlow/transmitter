@@ -9,13 +9,13 @@ namespace Transmitter.ViewControllers
     public class PublisherController : Controller
     {
         private readonly ILogger<PublisherController> _logger;
-        private readonly IKeyStore keyStore;
+        private readonly IKeyStore<SigningKey> signingKeyStore;
         private readonly IMessageStore messageStore;
 
-        public PublisherController(ILogger<PublisherController> logger, IKeyStore keyStore, IMessageStore messageStore)
+        public PublisherController(ILogger<PublisherController> logger, IKeyStore<SigningKey> signingKeyStore, IMessageStore messageStore)
         {
             _logger = logger;
-            this.keyStore = keyStore;
+            this.signingKeyStore = signingKeyStore;
             this.messageStore = messageStore;
         }
 
@@ -23,7 +23,7 @@ namespace Transmitter.ViewControllers
         [Route("Publisher/{publicKey}", Name="PublisherID")]
         public IActionResult Publisher(string publicKey)
         {
-            var key = keyStore.GetKey(publicKey);
+            var key = signingKeyStore.GetKey(publicKey);
             return View(key);
         }
 
@@ -33,7 +33,7 @@ namespace Transmitter.ViewControllers
         {
             var publicKey = body["publicKey"];
             var payload = body["payload"];
-            var key = keyStore.GetKey(publicKey);
+            var key = signingKeyStore.GetKey(publicKey);
             var signature = Signer.Sign(key, payload);
             var message = new Message(key.PublicKey, signature, payload);
             messageStore.AddMessage(message);

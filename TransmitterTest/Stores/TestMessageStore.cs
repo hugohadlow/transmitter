@@ -46,7 +46,9 @@ namespace TransmitterTest.Stores
         [Test]
         public void TestWriteMessage()
         {
-            var keyPair = KeyHelper.Generate("nickname");
+            var keyStore = new KeyStore<SigningKey>(configuration);
+            var publicKey = keyStore.GenerateKey("nickname");
+            var keyPair = keyStore.GetKey(publicKey);
             string payload = "payload";
             var signature = Signer.Sign(keyPair, payload);
             var identity = keyPair.PublicKey;

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Transmitter.Models
 {
-    public class Key
+    public abstract class Key
     {
         [Required]
         public string PublicKey { get; }
@@ -26,5 +26,19 @@ namespace Transmitter.Models
                 NullValueHandling = NullValueHandling.Ignore
             });
         }
+    }
+
+    public class SigningKey : Key
+    {
+        public SigningKey(string publicKey, string privateKey, string name) : 
+            base(publicKey, privateKey, name)
+        { }
+    }
+
+    public class EncryptionKey : Key
+    {
+        public EncryptionKey(string publicKey, string privateKey, string name) :
+            base(publicKey, privateKey, name)
+        { }
     }
 }
