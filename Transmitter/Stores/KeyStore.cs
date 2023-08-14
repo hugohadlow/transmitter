@@ -17,11 +17,15 @@ namespace Transmitter.Stores
     public class KeyStore<T> : IKeyStore<T> where T : Key
     {
         private readonly string keysLocation;
+        private readonly int keyLength;
 
         protected Dictionary<string, T> keys;
 
         public KeyStore(IConfiguration configuration) {
-            keysLocation = configuration["Keys:" + typeof(T).Name + ":Location"];
+            string path = "Keys:" + typeof(T).Name;
+            keysLocation = configuration[path + ":Location"];
+            keyLength = Convert.ToInt32(configuration[path + ":KeyLength"]);
+            if (keyLength == 0) throw new ArgumentException("Key length cannot be 0");
 
             if (File.Exists(keysLocation + "/keys.json"))
             {
@@ -47,7 +51,7 @@ namespace Transmitter.Stores
 
         public string GenerateKey(string nickname)
         {
-            var rsa = new RSACryptoServiceProvider(2048) { PersistKeyInCsp = false };
+            var rsa = new RSACryptoServiceProvider(keyLength) { PersistKeyInCsp = false };
             var key = (T)Activator.CreateInstance(typeof(T), new object[] {
                     Base32Encoding.ToString(rsa.ExportCspBlob(false)),
                     Base32Encoding.ToString(rsa.ExportCspBlob(true)),
