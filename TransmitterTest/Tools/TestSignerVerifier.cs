@@ -3,7 +3,7 @@ using Transmitter.Models;
 using Transmitter.Stores;
 using Transmitter.Tools;
 
-namespace TransmitterTest
+namespace TransmitterTest.Tools
 {
     public class TestSignerVerifier
     {
