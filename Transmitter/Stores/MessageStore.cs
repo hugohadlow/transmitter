@@ -21,6 +21,13 @@ namespace Transmitter.Stores
                 get { return identity; }
             }
 
+            private readonly string nickname;
+            public string Nickname
+            {
+                get { return nickname; }
+            }
+
+
             private readonly string directory;
             public string Directory
             {
@@ -97,8 +104,8 @@ namespace Transmitter.Stores
             if (File.Exists(subscriptionsFile)) {
 
                 var json = File.ReadAllText(subscriptionsFile);
-                var identityToDirectory = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-                subscriptions = identityToDirectory.ToDictionary(x => x.Key, x => new Subscription(x.Key, x.Value));
+                var subscriptionList = JsonConvert.DeserializeObject<List<Subscription>>(json);
+                subscriptions = subscriptionList.ToDictionary(x => x.Identity, x => x);
             }
         }
 
@@ -153,7 +160,7 @@ namespace Transmitter.Stores
         private void WriteSubscriptions()
         {
             //Don't write messages, only identity and directory
-            var json = JsonConvert.SerializeObject(subscriptions.ToDictionary(x => x.Key, x => x.Value.Directory));
+            var json = JsonConvert.SerializeObject(subscriptions.Values, Formatting.Indented);
             Directory.CreateDirectory(ArchiveLocation);
             File.WriteAllText(ArchiveLocation + "/subscriptions.json", json);
         }

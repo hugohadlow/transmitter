@@ -78,7 +78,7 @@ namespace Transmitter.Stores
 
         public void WriteKeyPairs()
         {
-            var json = JsonConvert.SerializeObject(keys.Values);
+            var json = JsonConvert.SerializeObject(keys.Values, Formatting.Indented);
             Directory.CreateDirectory(keysLocation);
             File.WriteAllText(keysLocation + "/keys.json", json);
         }
