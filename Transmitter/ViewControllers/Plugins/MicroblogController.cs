@@ -45,7 +45,7 @@ namespace Transmitter.ViewControllers
         }
 
         [HttpGet]
-        [Route("Microblog", Name="Microblog")]
+        [Route("Microblog", Name="MicroblogQuestionMark")]
         public IActionResult MicroblogQuestionMark(string? publicKey, string? replyId, string? quoteId)
         {
             return Microblog(publicKey, replyId, quoteId);
@@ -98,7 +98,7 @@ namespace Transmitter.ViewControllers
             var signature = Signer.Sign(key, microblog);
             var message = new Message(key.PublicKey, signature, microblog);
             messageStore.AddMessage(message);
-            return RedirectToRoute("Microblog",
+            return RedirectToRoute("MicroblogQuestionMark",
                 new RouteValueDictionary { { "publicKey", publicKey } });
         }
     }

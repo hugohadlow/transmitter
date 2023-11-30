@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Dynamic;
 using Transmitter.Models;
 using Transmitter.Stores;
 using Transmitter.Tools;
@@ -19,12 +20,37 @@ namespace Transmitter.ViewControllers
             this.messageStore = messageStore;
         }
 
-        [HttpGet]
-        [Route("Publisher/{publicKey}", Name="PublisherID")]
-        public IActionResult Publisher(string publicKey)
+        private IDictionary<String, String> GetIdentities()
         {
-            var key = signingKeyStore.GetKey(publicKey);
-            return View(key);
+            return signingKeyStore.GetKeys().ToDictionary(x => x.PublicKey, x => x.Name);
+        }
+
+        [HttpGet]
+        [Route("Publisher", Name = "PublisherQuestionMark")]
+        public IActionResult PublisherQuestionMark(string? publicKey)
+        {
+            return Publisher(publicKey);
+        }
+
+        [HttpGet]
+        [Route("Publisher/{publicKey}", Name = "PublisherSlash")]
+        public IActionResult PublisherSlash(string publicKey)
+        {
+            return Publisher(publicKey);
+        }
+
+        private IActionResult Publisher(string publicKey)
+        {
+            dynamic model = new ExpandoObject();
+            if (publicKey != null)
+            {
+                var key = signingKeyStore.GetKey(publicKey);
+                model.PublicKey = publicKey;
+                model.Nickname = key.Name;
+            }
+
+            model.Identities = GetIdentities();
+            return View("/Views/Shared/Publisher.cshtml", model);
         }
 
         [HttpPost]
@@ -37,7 +63,7 @@ namespace Transmitter.ViewControllers
             var signature = Signer.Sign(key, payload);
             var message = new Message(key.PublicKey, signature, payload);
             messageStore.AddMessage(message);
-            return RedirectToRoute("PublisherID", 
+            return RedirectToRoute("PublisherQuestionMark", 
                 new RouteValueDictionary { { "publicKey", publicKey } });
         }
     }

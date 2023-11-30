@@ -1,4 +1,4 @@
-﻿@model Transmitter.Models.Key
+﻿@model dynamic
 @{
     Layout = "_Layout";
 }
@@ -11,14 +11,29 @@
 <body>
     <h1>Publisher</h1>
 
-    <h2>Active key:</h2> @Model.PublicKey
-    <h2>Nickname:</h2> @Model.Name
-    <h2>Message:</h2>
-    <form method="post" action="../Publisher">
-        <input type="hidden" name="publicKey" value="@Model.PublicKey" />
+    <h2>Select identity</h2>
+
+    <form method="get" action="../Publisher">
+        <select name="publicKey" id="publicKey">
+            @foreach (var identity in Model.Identities)
+            {
+                <option value="@identity.Key">@identity.Value</option>
+            }
+        </select>
+        <button type="submit">Select</button>
+    </form>
+
+    @if (((IDictionary<String, object>)Model).ContainsKey("PublicKey"))
+    {
+        <h2>Active key:</h2> @Model.PublicKey
+        <h3>Nickname:</h3> @Model.Nickname
+        <h2>Message:</h2>
+        <form method="post" action="../Publisher">
+            <input type="hidden" name="publicKey" value="@Model.PublicKey" />
         <textarea name="payload" rows="3" cols="30"></textarea><br />
         <button type="submit">Publish</button>
-    </form>
+        </form>
+    }
 
 </body>
 </html>

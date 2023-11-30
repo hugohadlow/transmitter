@@ -27,7 +27,7 @@ namespace Transmitter.Stores
             keyLength = Convert.ToInt32(configuration[path + ":KeyLength"]);
             if (keyLength == 0) throw new ArgumentException("Key length cannot be 0");
 
-            if (File.Exists(keysLocation + "/keys.json"))
+                if (File.Exists(keysLocation + "/keys.json"))
             {
                 var json = File.ReadAllText(keysLocation + "/keys.json");
                 var keyList = JsonConvert.DeserializeObject<List<T>>(json);
