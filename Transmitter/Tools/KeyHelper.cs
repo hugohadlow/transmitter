@@ -10,7 +10,6 @@ namespace Transmitter.Tools
         public static RSACryptoServiceProvider RSAFromKey(Key key)
         {
             var rsa = new RSACryptoServiceProvider();
-            rsa.ImportCspBlob(Base32Encoding.ToBytes(key.PublicKey));
             rsa.ImportCspBlob(Base32Encoding.ToBytes(key.PrivateKey));
             return rsa;
         }
