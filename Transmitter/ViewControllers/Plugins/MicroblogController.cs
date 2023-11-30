@@ -51,6 +51,7 @@ namespace Transmitter.ViewControllers
             return Microblog(publicKey, replyId, quoteId);
         }
 
+        //For publishing messages from a given public key (identity)
         [HttpGet]
         [Route("Microblog/{publicKey}", Name="MicroblogSlash")]
         public IActionResult MicroblogSlash(string publicKey)
